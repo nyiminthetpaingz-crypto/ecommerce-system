@@ -1,15 +1,26 @@
-import { products } from "./products.js"; 
+const categoryContainer = document.getElementById("category-container");
+const productContainer = document.getElementById("product-container");
 
-const categories = [...new Set(products.map(product => product.category))].map(
-    category => ({ name: category, products: products.filter(product => product.category === category) })
-);
+categoryContainer.innerHTML = 'loading...';
+productContainer.innerHTML = 'loading...';
 
-console.log("Categories module loaded:", categories);
+async function loadHomePage() {
 
-document.addEventListener("DOMContentLoaded", function () {
+    try {
+        const response = await fetch("https://fakestoreapi.com/products");
+        const data = await response.json();
+        renderHomaPage(data);
+    }
+    catch (error) {
+        console.error("Error loading products:", error);
+    }
 
-    const categoryContainer = document.getElementById("category-container");
-    const productContainer = document.getElementById("product-container");
+};
+
+function renderHomaPage(products) {
+    const categories = [...new Set(products.map(product => product.category))].map(
+        category => ({ name: category, products: products.filter(product => product.category === category) })
+    );
 
     if (categoryContainer) {
         categoryContainer.innerHTML = categories.map((category, index) => `
@@ -63,5 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         `).join("");
     }
+};
 
-});
+loadHomePage();
