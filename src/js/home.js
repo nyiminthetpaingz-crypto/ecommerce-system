@@ -65,6 +65,19 @@ function renderHomePage(products) {
     });
 
     products.slice(0, 8).forEach((p) => {
+
+      console.log("Product ID:", p.id);
+      let stars = '';
+      const rating = Math.round(p.rating.rate);
+
+      for (let i = 0; i < 5; i++) {
+        if (i < rating) {
+          stars += '<span class="text-yellow-400">★</span>';
+        } else {
+          stars += '<span class="text-gray-300">★</span>';
+        }
+      }
+
         productContainer.innerHTML += `
             <article data-product-id="${p.id}" class="group overflow-hidden rounded-3xl border border-white/10 bg-white transition-all duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-blue-950/40">
               <div class="relative h-64 overflow-hidden bg-gray-100 p-8">
@@ -79,14 +92,23 @@ function renderHomePage(products) {
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/>
                   </svg>
                 </button>
-                <img src="${p.image}" alt="${p.title}"
-                  class="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
-                />
+                <a href="./productdetail.html?id=${p.id}" class="absolute inset-0 flex items-center justify-center">
+                  <img src="${p.image}" alt="${p.title}"
+                    class="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
+                  />
+                </a>
               </div>
               <div class="p-5">
                 <p class="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-blue-600">
                   ${p.category}
                 </p>
+                <div>${p.rating.rate}
+                  <span class="ml-1 inline-flex items-center gap-1 text-xs font-semibold text-gray-500">
+                    ${stars}
+                    <span class="sr-only">Rated ${p.rating.rate} out of 5 stars</span>
+                  </span>
+                </div>
+              
                 <h3 class="line-clamp-2 min-h-12 text-base font-semibold leading-6 text-gray-950">
                   ${p.title}
                 </h3>
